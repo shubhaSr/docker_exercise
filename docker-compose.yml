@@ -1,0 +1,51 @@
+version: '3'
+
+networks:
+  my_network_from_compose:
+
+services:
+  api:
+    image: datascientest/fastapi:1.0.0
+    ports:
+      - "8000:8000"
+    networks:
+      - my_network_from_compose
+    container_name: fast_api_container
+
+        # Add other configurations if needed for the API container
+
+  authentication_test:
+    networks:
+      - my_network_from_compose
+    depends_on:
+      - api
+    image: authentication-test
+    container_name: authentication_test_container 
+    environment:
+      - LOG=1
+    volumes:
+      - ${PWD}:/app/log
+
+  authorization_test:
+    networks:
+      - my_network_from_compose
+    depends_on:
+      - api
+    image: authorization-test
+    container_name: authorization_test_container
+    environment:
+      - LOG=1
+    volumes:
+      - ${PWD}:/app/log
+
+  content_test:
+    networks:
+      - my_network_from_compose
+    depends_on:
+      - api
+    image: content-test
+    container_name: content_test_container
+    environment:
+      - LOG=1
+    volumes:
+      - ${PWD}:/app/log       

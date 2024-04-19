@@ -1,0 +1,18 @@
+# Use a base image suitable for Python
+FROM python:3.8.10
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the test script into the container
+COPY content_test.py /app/
+
+# Install any necessary dependencies
+RUN python -m pip install pip==20.0.2
+
+# Set environment variables
+ENV LOG=1
+
+# Run the test script when the container starts
+CMD ["python", "content_test.py"]
+
